@@ -16,7 +16,7 @@ namespace PlannerApp.CMD
             Console.Title = "Планировщик";
             Task task = new Task();
             TaskController TManager = new TaskController();
-            string listenerKey = default; int numDel; string valDel;
+            string listenerKey = default; int numDel; string temp; int numEdit; 
             Console.WriteLine("Вас приветствует приложение планировщик!");
             while (true)
             {
@@ -37,17 +37,18 @@ namespace PlannerApp.CMD
                 {
                     Console.WriteLine($"{e.Message}");
                 }
-                switch(listenerKey)
+                switch (listenerKey)
                 {
-                    case"1":
+                    case "1":
                         {
-                            if (TManager.tasks.Count==0) Console.WriteLine("Список задач пуст!");
+                            if (TManager.tasks.Count == 0) Console.WriteLine("Список задач пуст!");
                             else foreach (Task t in TManager.tasks)
-                            {
-                                Console.WriteLine(t.ToString());
-                            }
-                        }break;
-                    case "2":TManager.AddTask();break;
+                                {
+                                    Console.WriteLine(t.ToString());
+                                }
+                        }
+                        break;
+                    case "2": TManager.AddTask(); break;
                     case "3":
                         {
                             if (TManager.tasks.Count != 0)
@@ -57,12 +58,12 @@ namespace PlannerApp.CMD
                                 {
                                     try
                                     {
-                                        valDel = Console.ReadLine();
-                                        if (!int.TryParse(valDel, out numDel)) throw new Exception("Неверный формат ввода");
-                                        numDel = Convert.ToInt32(valDel);
+                                        temp = Console.ReadLine();
+                                        if (!int.TryParse(temp, out numDel) || int.Parse(temp)<0) throw new Exception("Неверный формат ввода");
+                                        numDel = Convert.ToInt32(temp);
                                         break;
                                     }
-                                    catch(Exception e)
+                                    catch (Exception e)
                                     {
                                         Console.WriteLine($"Ошибка: {e.Message}");
                                         Console.WriteLine("Пожалуйста введите id заново");
@@ -70,9 +71,32 @@ namespace PlannerApp.CMD
                                 }
                                 TManager.DeleteTask(numDel);
                             }
-                            else Console.WriteLine("Список пуст");
-                        }
-                        break;
+                            else Console.WriteLine("Список задач пуст!");
+                        }break;
+                    case "4":
+                        {
+                            if (TManager.tasks.Count != 0)
+                            {
+                                Console.WriteLine("Введите id задачи, которую хотите редактировать");
+                                while (true)
+                                {
+                                    try
+                                    {
+                                        temp = Console.ReadLine();
+                                        if (!int.TryParse(temp, out numEdit)) throw new Exception("Неверный формат ввода");
+                                        numEdit = Convert.ToInt32(temp);
+                                        break;
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Console.WriteLine($"Ошибка: {e.Message}");
+                                        Console.WriteLine("Пожалуйста введите id заново");
+                                    }
+                                }
+                                TManager.EditRecord(numEdit);
+                            }
+                            else Console.WriteLine("Список задач пуст!");
+                        }break;
                     case "0":return;
                     default: Console.WriteLine("Неверный формат ввода");break;
                 }
