@@ -9,6 +9,6 @@ namespace PlannerApp.BL
     {
         int DeleteTask(int id);
         int AddTask();
-        int EditRecord(int id);
+        int EditTask(int id);
     }
 }

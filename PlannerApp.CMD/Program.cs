@@ -16,7 +16,7 @@ namespace PlannerApp.CMD
             Console.Title = "Планировщик";
             Task task = new Task();
             TaskController TManager = new TaskController();
-            string listenerKey = default; int numDel; string temp; int numEdit; 
+            string listenerKey = default; int numEdit; 
             Console.WriteLine("Вас приветствует приложение планировщик!");
             while (true)
             {
@@ -26,6 +26,8 @@ namespace PlannerApp.CMD
                 Console.WriteLine("2 - Добавить задачу");
                 Console.WriteLine("3 - Удалить задачу");
                 Console.WriteLine("4 - Редактировать задачу");
+                Console.WriteLine("5 - Запись информации в файл");
+                Console.WriteLine("6 - Загрузка информации из файла");
                 Console.WriteLine("0 - Выход из программы");
                 Console.WriteLine("+++++++++++++++++++++++++++++");
                 listenerKey = (Console.ReadLine());
@@ -54,22 +56,8 @@ namespace PlannerApp.CMD
                             if (TManager.tasks.Count != 0)
                             {
                                 Console.WriteLine("Введите id задачи, которую хотите удалить");
-                                while (true)
-                                {
-                                    try
-                                    {
-                                        temp = Console.ReadLine();
-                                        if (!int.TryParse(temp, out numDel) || int.Parse(temp)<0) throw new Exception("Неверный формат ввода");
-                                        numDel = Convert.ToInt32(temp);
-                                        break;
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine($"Ошибка: {e.Message}");
-                                        Console.WriteLine("Пожалуйста введите id заново");
-                                    }
-                                }
-                                TManager.DeleteTask(numDel);
+                                KeyValidation(out numEdit);
+                                TManager.DeleteTask(numEdit);
                             }
                             else Console.WriteLine("Список задач пуст!");
                         }break;
@@ -78,22 +66,8 @@ namespace PlannerApp.CMD
                             if (TManager.tasks.Count != 0)
                             {
                                 Console.WriteLine("Введите id задачи, которую хотите редактировать");
-                                while (true)
-                                {
-                                    try
-                                    {
-                                        temp = Console.ReadLine();
-                                        if (!int.TryParse(temp, out numEdit)) throw new Exception("Неверный формат ввода");
-                                        numEdit = Convert.ToInt32(temp);
-                                        break;
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Console.WriteLine($"Ошибка: {e.Message}");
-                                        Console.WriteLine("Пожалуйста введите id заново");
-                                    }
-                                }
-                                TManager.EditRecord(numEdit);
+                                KeyValidation(out numEdit);
+                                TManager.EditTask(numEdit);
                             }
                             else Console.WriteLine("Список задач пуст!");
                         }break;
@@ -101,6 +75,26 @@ namespace PlannerApp.CMD
                     default: Console.WriteLine("Неверный формат ввода");break;
                 }
             }
+        }
+        private static void KeyValidation(out int numEdit)
+        {
+            string temp;
+            while (true)
+            {
+                try
+                {
+                    temp = Console.ReadLine();
+                    if (!int.TryParse(temp, out numEdit)) throw new Exception("Неверный формат ввода");
+                    numEdit = Convert.ToInt32(temp);
+                    break;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Ошибка: {e.Message}");
+                    Console.WriteLine("Пожалуйста введите id заново");
+                }
+            }
+
         }
     }
 }

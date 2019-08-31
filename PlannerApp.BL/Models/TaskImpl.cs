@@ -23,10 +23,17 @@ namespace PlannerApp.BL
                     int id)
         {
             #region Валидация
-            if (string.IsNullOrWhiteSpace(taskName)) throw new ArgumentNullException("Название не может быть пустым", nameof(taskName));
-            if (string.IsNullOrWhiteSpace(taskDescription)) throw new ArgumentNullException("Описание не может быть пустым", nameof(taskDescription));
-            if (timeStart < DateTime.Now) throw new ArgumentException("Введена некорректная дата начала выполнения задачи", nameof(timeStart));
-            if (timeFinish <= timeStart) throw new ArgumentException("Введена некорректная дата завершения выполнения задачи",nameof(timeFinish));
+            try
+            {
+                if (string.IsNullOrWhiteSpace(taskName)) throw new ArgumentException("Название не может быть пустым", nameof(taskName));
+                if (string.IsNullOrWhiteSpace(taskDescription)) throw new ArgumentException("Описание не может быть пустым", nameof(taskDescription));
+                if (timeStart <= DateTime.Now) throw new ArgumentException("Введена некорректная дата начала выполнения задачи", nameof(timeStart));
+                if (timeFinish <= timeStart) throw new ArgumentException("Введена некорректная дата завершения выполнения задачи", nameof(timeFinish));
+            }
+            catch(ArgumentException e)
+            {
+                Console.WriteLine($"Ошибка: {e.Message}");
+            }
             #endregion
             this.id = id;
             this.taskName = taskName;
@@ -37,7 +44,7 @@ namespace PlannerApp.BL
         public override string ToString()
         {
             return $"Номер задачи: {id}\nНазвание задачи: {taskName}\nОписание задачи: {taskDescription}\n" +
-                $"Дата старта: {timeStart.Day}.{timeStart.Month}.{timeStart.Year}\nДата завершения: {timeFinish.Day}.{timeFinish.Month}.{timeFinish.Year}";
+                $"Дата старта: {timeStart}\nДата завершения: {timeFinish}";
         }
     }
 }
