@@ -10,5 +10,6 @@ namespace PlannerApp.BL
         int DeleteTask(int id);
         int AddTask();
         int EditTask(int id);
+        int SortTask();
     }
 }

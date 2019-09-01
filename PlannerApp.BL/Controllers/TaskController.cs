@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 namespace PlannerApp.BL
 {
     public partial class TaskController : ITaskController
     {
+        private const string FILE_NAME = "SaveTasks.bin";
         private const int NAME_MAX_LENGHT = 20;
-        const int DESC_MAX_LENGHT = 20;
+        private const int DESC_MAX_LENGHT = 20;
         public List<Task> tasks { get; set; }
         public TaskController(List<Task> tasks) => this.tasks = tasks ?? throw new ArgumentNullException("Список задач пуст!", nameof(tasks));
         public TaskController()
@@ -133,6 +134,31 @@ namespace PlannerApp.BL
             }
             if (isEdit == false) Console.WriteLine("Задачи с таким id не существует");
             return 0;
+        }
+        public int SortTask() { return 0; }
+        public bool SaveToFile()
+        {
+            var binaryFormatter = new BinaryFormatter();
+            using (var file = new FileStream(FILE_NAME, FileMode.OpenOrCreate))
+            {
+                binaryFormatter.Serialize(file, tasks);
+                Console.WriteLine("Список задач сохранён");
+            }
+            return true;
+        }
+        public void LoadFromFile()
+        {
+            var binaryFormatter = new BinaryFormatter();
+            using (var file = new FileStream(FILE_NAME, FileMode.OpenOrCreate))
+            {
+                try
+                {
+                    tasks = binaryFormatter.Deserialize(file) as List<Task> ?? throw new Exception("Нет сохранененных задач!");
+                    Console.WriteLine("Список задач загружен");
+                }
+                catch (Exception e) { Console.WriteLine($"Ошибка: {e.Message}"); }
+            }
+            return;
         }
         #region Методы ввода и валидации модели
         private string NameIsEnter(int maxLenght)
