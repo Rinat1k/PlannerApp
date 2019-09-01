@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PlannerApp.BL;
+using PlannerApp.BL.Controllers;
+
 namespace PlannerApp.CMD
 {
-    /// <summary>
-    /// Регистрацию бы добавить тебе бро
-    /// </summary>
     class Program
     {
         static void Main(string[] args)
@@ -30,8 +29,9 @@ namespace PlannerApp.CMD
                 Console.WriteLine("2 - Добавить задачу");
                 Console.WriteLine("3 - Удалить задачу");
                 Console.WriteLine("4 - Редактировать задачу");
-                Console.WriteLine("5 - Сохранить задачи");
-                Console.WriteLine("6 - Загрузить задачи");
+                Console.WriteLine("5 - Отсортировать список по истечении срока");
+                Console.WriteLine("6 - Сохранить задачи");
+                Console.WriteLine("7 - Загрузить задачи");
                 Console.WriteLine("0 - Выход из программы");
                 Console.WriteLine("+++++++++++++++++++++++++++++");
                 listenerKey = (Console.ReadLine());
@@ -95,11 +95,29 @@ namespace PlannerApp.CMD
                                 Console.WriteLine("Список задач пуст!");
                             }
                             Console.ForegroundColor = ConsoleColor.White;
-                            Console.ReadKey();
                             Console.Clear();
                         }
                         break;
                     case "5":
+                        {
+                            Console.Clear();
+                            if (TManager.tasks.Count > 0)
+                            {
+                                TManager.tasks.Sort(0, TManager.tasks.Count, new TaskComparer());
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                Console.WriteLine("Список визуально отсортирован");
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Magenta;
+                                Console.WriteLine("Список задач пуст!");
+                            }
+                            Console.ReadKey();
+                            Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
+                        break;
+                    case "6":
                         {
                             Console.Clear();
                             if (TManager.tasks.Count > 0)
@@ -118,7 +136,7 @@ namespace PlannerApp.CMD
                             Console.ForegroundColor = ConsoleColor.White;
                         }
                         break;
-                    case "6":
+                    case "7":
                         {
                             Console.Clear(); Console.ForegroundColor = ConsoleColor.DarkCyan;
                             TManager.LoadFromFile();
@@ -152,7 +170,7 @@ namespace PlannerApp.CMD
                 }
             }
 
-        }
+        } //Корректность ввода ключа выбора
         private static bool ConfirmToExit()
         {
             string key = default;

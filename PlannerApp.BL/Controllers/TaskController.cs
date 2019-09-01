@@ -8,8 +8,8 @@ namespace PlannerApp.BL
     public partial class TaskController : ITaskController
     {
         private const string FILE_NAME = "SaveTasks.bin";
-        private const int NAME_MAX_LENGHT = 20;
-        private const int DESC_MAX_LENGHT = 20;
+        private const int NAME_MAX_LENGHT = 35;
+        private const int DESC_MAX_LENGHT = 120;
         public List<Task> tasks { get; set; }
         public TaskController(List<Task> tasks) => this.tasks = tasks ?? throw new ArgumentNullException("Список задач пуст!", nameof(tasks));
         public TaskController()
@@ -85,6 +85,7 @@ namespace PlannerApp.BL
                     isEdit = true;
                     while (true)
                     {
+                        Console.Clear();
                         Console.WriteLine("Выберите поле для редактирования");
                         Console.WriteLine("+++++++++++++++++++++++++++++");
                         Console.WriteLine("1 - Название задачи");
@@ -108,26 +109,36 @@ namespace PlannerApp.BL
                                 {
                                     Console.WriteLine("Пожалуйста введите новое имя задачи");
                                     tasks[i].taskName = NameIsEnter(NAME_MAX_LENGHT);
+                                    Console.WriteLine("Имя отредактировано");
+                                    Console.ReadKey();
                                 }
                                 break;
                             case "2":
                                 {
                                     Console.WriteLine("Пожалуйста введите новое описание задачи");
                                     tasks[i].taskDescription = NameIsEnter(DESC_MAX_LENGHT);
+                                    Console.WriteLine("Описание отредактировано");
+                                    Console.ReadKey();
                                 }
                                 break;
                             case "3":
                                 {
                                     Console.WriteLine("Введите пожалуйста новое время начала выполнения задачи {дд мм гггг}");
                                     tasks[i].timeStart = DateStartIsEnter(tasks[i].timeFinish,true);
-                                }break;
+                                    Console.WriteLine("Время начала выполнения отредактировано");
+                                    Console.ReadKey();
+                                }
+                                break;
                             case "4":
                                 {
                                     Console.WriteLine("Введите пожалуйста новое время завершения выполнения задачи {дд мм гггг}");
                                     tasks[i].timeFinish = DateFinishIsEnter(tasks[i].timeStart);
-                                }break;
+                                    Console.WriteLine("Время завершения выполнения отредактировано");
+                                    Console.ReadKey();
+                                }
+                                break;
                             case "0":return 0;
-                            default: Console.WriteLine("Неверный формат ввода");break;
+                            default: Console.WriteLine("Неверный формат ввода"); Console.ReadKey(); break;
                         }
                     }
                 }

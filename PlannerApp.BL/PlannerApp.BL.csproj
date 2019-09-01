@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\TaskComparer.cs" />
     <Compile Include="Models\TaskImpl.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Controllers\ITaskController.cs" />
